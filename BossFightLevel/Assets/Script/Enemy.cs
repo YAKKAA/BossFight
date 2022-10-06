@@ -4,18 +4,22 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
-{   
-    private NavMeshAgent ghost;
+{
+    private NavMeshAgent bossAI;
 
     public GameObject player;
 
-    public bool isChasing = false;
+    //public bool isChasing = false;
 
-    public float chaseDistance = 3.0f;
+    //public float chaseDistance = 3.0f;
 
     public float ftime = 3;
 
-    public float bossSpeed = 12.5f;
+    public float bossNormalSpeed = 6f;
+    public float bossNormalAcc = 3f;
+
+    public float bossDashSpeed = 12.5f;
+    public float bossDashAcc = 6f;
 
     private bool isRushing = false;
 
@@ -24,7 +28,8 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ghost = GetComponent<NavMeshAgent>();
+        bossAI = GetComponent<NavMeshAgent>();
+        bossAI.speed = bossNormalSpeed;
     }
 
     // Update is called once per frame
@@ -32,27 +37,20 @@ public class Enemy : MonoBehaviour
     {
         if (Manager.Stage == 1)
         {
-            float distance = Vector3.Distance(transform.position, player.transform.position);
+            MoveToPlayer();
 
-            if (distance < chaseDistance && isChasing)
-            {
-                Debug.Log("Health--");
-
-                //Vector3 directionToPlayer = transform.position - player.transform.position;
-
-                //Vector3 newPos = transform.position - directionToPlayer;
-
-                //ghost.SetDestination(newPos);
-            }
         }
         else if (Manager.Stage == 2)
         {
+            MoveToPlayer();
+
             ftime += Time.deltaTime;
+
             if (ftime > 6f)
             {
                 isRushing = true;
 
-                rushDirection = (player.transform.position - transform.position).normalized;
+                //rushDirection = (player.transform.position - transform.position).normalized;
 
                 Debug.Log("Are u ready?");
 
@@ -60,14 +58,33 @@ public class Enemy : MonoBehaviour
             }
 
             if (isRushing)
-            {
+            {   
+                bossAI.acceleration = bossDashAcc;
+                bossAI.speed = bossDashSpeed;
+
                 if (ftime > 1f)
-                {
+                {   
+                    bossAI.acceleration = bossNormalAcc;
+                    bossAI.speed = bossNormalSpeed;
                     isRushing = false;
+                    
                 }
-                transform.Translate(rushDirection * Time.smoothDeltaTime * bossSpeed * 10);
+                //transform.Translate(rushDirection * Time.smoothDeltaTime * bossDashSpeed * 10);
 
             }
         }
+    }
+
+    void MoveToPlayer()
+    {
+        float distance = Vector3.Distance(transform.position, player.transform.position);
+
+        //Debug.Log("Health--");
+
+        Vector3 directionToPlayer = transform.position - player.transform.position;
+
+        Vector3 newPos = transform.position - directionToPlayer;
+
+        bossAI.SetDestination(newPos);
     }
 }
