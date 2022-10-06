@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Manager : MonoBehaviour
-{   
+{
     public AudioSource source;
     public AudioClip clip;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -45,6 +45,12 @@ public class Manager : MonoBehaviour
                     Debug.Log("Entering stage 2");
                 }
             }
+        }
+        if (BossHealth == 0)
+        {
+            Debug.Log("Yeah it died");
+            clip = null;
+            Destroy(GameObject.Find("Boss"));
         }
 
     }
