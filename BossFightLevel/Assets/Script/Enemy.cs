@@ -47,7 +47,7 @@ public class Enemy : MonoBehaviour
         {
             MoveToPlayer();
             
-            source.PlayOneShot(clip);
+            //source.PlayOneShot(clip);
 
             ftime += Time.deltaTime;
 
