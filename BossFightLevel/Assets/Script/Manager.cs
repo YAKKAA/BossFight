@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Manager : MonoBehaviour
-{
+{   
+    public AudioSource source;
+    public AudioClip clip;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -38,6 +41,8 @@ public class Manager : MonoBehaviour
                 {
                     ColsDownSpeed = 0;
                     Stage = 2;
+                    source.PlayOneShot(clip);
+                    Debug.Log("Entering stage 2");
                 }
             }
         }
