@@ -20,6 +20,8 @@ public class Enemy : MonoBehaviour
 
     public float bossDashSpeed = 12.5f;
     public float bossDashAcc = 6f;
+    public AudioSource source;
+    public AudioClip clip;
 
     private bool isRushing = false;
 
@@ -38,11 +40,14 @@ public class Enemy : MonoBehaviour
         if (Manager.Stage == 1)
         {
             MoveToPlayer();
+            
 
         }
         else if (Manager.Stage == 2)
         {
             MoveToPlayer();
+            
+            source.PlayOneShot(clip);
 
             ftime += Time.deltaTime;
 
@@ -53,7 +58,7 @@ public class Enemy : MonoBehaviour
                 //rushDirection = (player.transform.position - transform.position).normalized;
 
                 Debug.Log("Are u ready?");
-
+                
                 ftime = 0;
             }
 
